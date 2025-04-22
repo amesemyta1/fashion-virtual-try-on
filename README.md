@@ -39,12 +39,25 @@ cd virtual-try-on
 npm install
 ```
 
-3. Start the development server:
+3. Set up environment:
+```bash
+cp src/environments/environment.template.ts src/environments/environment.ts
+```
+Then edit `src/environments/environment.ts` and add your API credentials:
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'YOUR_API_URL',
+  apiKey: 'YOUR_API_KEY'
+};
+```
+
+4. Start the development server:
 ```bash
 ng serve
 ```
 
-4. Open your browser and navigate to `http://localhost:4200`
+5. Open your browser and navigate to `http://localhost:4200`
 
 ## Development
 
