@@ -1,8 +1,5 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GenerationService, GenerationResponse } from '../../services/generation.service';
-import { Subscription, interval } from 'rxjs';
-import { switchMap, takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-result',
@@ -10,79 +7,137 @@ import { switchMap, takeWhile } from 'rxjs/operators';
   imports: [CommonModule],
   template: `
     <div class="result-container">
-      <div *ngIf="isLoading || isProcessing" class="loading-state">
-        <div class="spinner"></div>
-        <p>{{ isProcessing ? 'Processing your image...' : 'Generating your virtual try-on...' }}</p>
-      </div>
+      <h2 class="section-title">
+        <span class="icon">✨</span>
+        Result
+      </h2>
 
-      <div *ngIf="error && !isProcessing" class="error-state">
-        <span class="icon">⚠️</span>
-        <h3>Generation Failed</h3>
-        <p>{{ error.message }}</p>
-        <button class="btn btn-primary" 
-                (click)="retryGeneration()"
-                [disabled]="isProcessing">
-          Try Again
-        </button>
-      </div>
+      <div class="preview-container" [class.has-result]="resultImage">
+        <div class="preview-content">
+          <div *ngIf="isLoading" class="status-message">
+            <div class="spinner"></div>
+            <p>Uploading images...</p>
+          </div>
 
-      <img *ngIf="resultImage && !isLoading && !isProcessing" 
-           [src]="resultImage" 
-           alt="Generated try-on result" 
-           class="result-image" />
+          <div *ngIf="isProcessing" class="status-message">
+            <div class="spinner"></div>
+            <p>Generating try-on result...</p>
+          </div>
+
+          <div *ngIf="error" class="error-message">
+            <span class="icon">⚠️</span>
+            <p>{{ error }}</p>
+          </div>
+
+          <div *ngIf="!isLoading && !isProcessing && !error && !resultImage" class="empty-state">
+            <p class="empty-message">No Result Yet</p>
+            <p class="empty-hint">Select a garment and upload a model image to see the result</p>
+          </div>
+
+          <img *ngIf="resultImage" [src]="resultImage" alt="Try-on result" class="result-image">
+        </div>
+      </div>
     </div>
   `,
   styles: [`
     .result-container {
-      width: 100%;
       height: 100%;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: var(--color-background);
-      border-radius: var(--border-radius-lg);
-      overflow: hidden;
-    }
-
-    .loading-state {
-      text-align: center;
-      color: var(--color-text-secondary);
-    }
-
-    .spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid var(--color-primary);
-      border-top-color: transparent;
-      border-radius: 50%;
-      margin: 0 auto var(--spacing-4);
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .error-state {
-      text-align: center;
-      color: var(--color-text-primary);
+      flex-direction: column;
+      gap: var(--spacing-4);
+      background: var(--surface-card);
+      border-radius: var(--border-radius);
       padding: var(--spacing-4);
     }
 
-    .error-state .icon {
-      font-size: 2rem;
-      margin-bottom: var(--spacing-3);
-      display: block;
+    .section-title {
+      color: var(--text-color);
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
     }
 
-    .error-state h3 {
-      margin: 0 0 var(--spacing-2);
+    .icon {
       font-size: 1.25rem;
     }
 
-    .error-state p {
-      margin: 0 0 var(--spacing-4);
-      color: var(--color-text-secondary);
+    .preview-container {
+      flex: 1;
+      background: var(--surface-ground);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .preview-container.has-result {
+      border-style: solid;
+      border-color: var(--primary-color);
+    }
+
+    .preview-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-4);
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--text-color-secondary);
+    }
+
+    .empty-message {
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin: 0 0 var(--spacing-2);
+    }
+
+    .empty-hint {
+      font-size: 0.875rem;
+      margin: 0;
+      opacity: 0.8;
+    }
+
+    .status-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--text-color-secondary);
+      text-align: center;
+    }
+
+    .error-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-2);
+      color: var(--red-500);
+      text-align: center;
+    }
+
+    .error-message .icon {
+      font-size: 2rem;
+    }
+
+    .error-message p {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--surface-border);
+      border-top-color: var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
     }
 
     .result-image {
@@ -90,75 +145,23 @@ import { switchMap, takeWhile } from 'rxjs/operators';
       max-height: 100%;
       object-fit: contain;
     }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .preview-container {
+        aspect-ratio: 3/4;
+      }
+    }
   `]
 })
-export class ResultComponent implements OnDestroy {
+export class ResultComponent {
+  @Input() isLoading = false;
   @Input() isProcessing = false;
   @Input() resultImage: string | null = null;
-  
-  isLoading = false;
-  error: { message: string } | null = null;
-  private statusCheckSubscription?: Subscription;
-  private currentGenerationId?: string;
-
-  constructor(private generationService: GenerationService) {}
-
-  startGeneration(generationId: string) {
-    this.isLoading = true;
-    this.error = null;
-    this.currentGenerationId = generationId;
-
-    // Poll generation status every 2 seconds
-    this.statusCheckSubscription = interval(2000)
-      .pipe(
-        switchMap(() => this.generationService.checkGenerationStatus(generationId)),
-        takeWhile(response => {
-          // Continue polling if status is pending or processing
-          const shouldContinue = response.status === 'pending' || response.status === 'processing';
-          
-          // Handle completion or failure
-          if (response.status === 'failed') {
-            this.handleGenerationError(response);
-          } else if (response.status === 'completed') {
-            this.handleGenerationSuccess(response);
-          }
-          
-          return shouldContinue;
-        }, true) // Include the last value
-      )
-      .subscribe({
-        error: (error) => this.handleGenerationError(error)
-      });
-  }
-
-  private handleGenerationError(response: GenerationResponse) {
-    this.isLoading = false;
-    this.error = {
-      message: response.error?.message || 'An unexpected error occurred during generation.'
-    };
-    
-    // Stop the generation process if it's still running
-    if (this.currentGenerationId) {
-      this.generationService.stopGeneration(this.currentGenerationId).subscribe();
-    }
-  }
-
-  private handleGenerationSuccess(response: GenerationResponse) {
-    this.isLoading = false;
-  }
-
-  retryGeneration() {
-    if (this.currentGenerationId) {
-      this.startGeneration(this.currentGenerationId);
-    }
-  }
-
-  ngOnDestroy() {
-    this.statusCheckSubscription?.unsubscribe();
-    
-    // Stop any ongoing generation when component is destroyed
-    if (this.currentGenerationId) {
-      this.generationService.stopGeneration(this.currentGenerationId).subscribe();
-    }
-  }
+  @Input() error: string | null = null;
 }

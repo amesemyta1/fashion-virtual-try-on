@@ -16,7 +16,7 @@ export interface TryOnResponse {
 
 export interface TryOnStatus {
   id: string;
-  status: 'processing' | 'completed';
+  status: 'starting' | 'in_queue' | 'processing' | 'completed' | 'failed';
   output?: string[];
   error: string | null;
 }
@@ -35,7 +35,11 @@ export class TryOnService {
   }
 
   startTryOn(request: TryOnRequest): Observable<TryOnResponse> {
-    return this.http.post<TryOnResponse>(`${this.API_URL}/run`, request, {
+    return this.http.post<TryOnResponse>(`${this.API_URL}/run`, {
+      model_image: request.model_image,
+      garment_image: request.garment_image,
+      category: 'auto'
+    }, {
       headers: {
         'Authorization': `Bearer ${this.API_KEY}`,
         'Content-Type': 'application/json'
@@ -51,11 +55,18 @@ export class TryOnService {
     });
   }
 
-  // Вспомогательный метод для polling статуса с интервалом
   pollStatus(id: string): Observable<TryOnStatus> {
     return interval(2000).pipe(
       switchMap(() => this.getStatus(id)),
-      takeWhile(response => response.status === 'processing' || !response.error, true)
+      takeWhile((response) => {
+        // Продолжаем опрос только если статус в процессе и нет ошибок
+        const inProgress = response.status === 'starting' || 
+                         response.status === 'in_queue' || 
+                         response.status === 'processing';
+                         
+        // Прекращаем опрос при ошибке или завершении
+        return inProgress && !response.error;
+      }, true) // true означает, что включаем последнее значение в результат
     );
   }
 } 
