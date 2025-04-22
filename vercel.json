@@ -6,7 +6,10 @@
       "use": "@vercel/static-build",
       "config": {
         "buildCommand": "npm run build",
-        "outputDirectory": "dist/fashion-virtual-try-on"
+        "outputDirectory": "dist/fashion-virtual-try-on",
+        "includeFiles": [
+          "src/environments/**"
+        ]
       }
     }
   ],
