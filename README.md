@@ -79,4 +79,20 @@ Run `ng test` to execute the unit tests via Karma.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Environment Setup
+
+1. Copy `src/assets/env.template.js` to `src/assets/env.js`
+2. Update `env.js` with your API key:
+```js
+window._env_ = {
+  API_KEY: 'your-api-key-here'
+};
+```
+
+**Note:** Never commit `env.js` to the repository as it contains sensitive information.
+
+## Development server
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files. 
