@@ -5,7 +5,7 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "echo \"window._env_ = { API_KEY: '$NEXT_PUBLIC_API_KEY' };\" > src/assets/env.js && ng build --configuration production",
+        "buildCommand": "ng build --configuration production && sed -i \"s/%NEXT_PUBLIC_API_KEY%/$NEXT_PUBLIC_API_KEY/g\" dist/fashion-virtual-try-on/index.html",
         "outputDirectory": "dist/fashion-virtual-try-on"
       }
     }
