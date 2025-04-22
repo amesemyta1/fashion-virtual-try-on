@@ -5,7 +5,7 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "ng build --configuration production && echo \"window._env_ = { API_KEY: '$API_KEY' };\" > dist/fashion-virtual-try-on/assets/env.js",
+        "buildCommand": "cp .env.production .env && ng build --configuration production",
         "outputDirectory": "dist/fashion-virtual-try-on"
       }
     }
@@ -22,5 +22,8 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "API_KEY": "@api_key"
+  }
 } 

@@ -51,3 +51,5 @@ Thumbs.db
 
 # Environment variables
 /src/assets/env.js
+.env
+.env.production
