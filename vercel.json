@@ -5,11 +5,9 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "npm run build",
+        "buildCommand": "npm run build:prod",
         "outputDirectory": "dist/fashion-virtual-try-on",
-        "includeFiles": [
-          "src/environments/**"
-        ]
+        "installCommand": "npm install"
       }
     }
   ],
