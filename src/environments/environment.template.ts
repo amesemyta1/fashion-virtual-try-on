@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiKey: 'fa-sCr9KKRWkNx4-mplZVHfDbBKoGL1oBf4zqk7O'
+  apiUrl: 'YOUR_API_URL',
+  apiKey: 'YOUR_API_KEY'
 }; 
