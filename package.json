@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "cp src/environments/environment.prod.ts src/environments/environment.ts && ng build",
+    "build": "ng build",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development"
   },
