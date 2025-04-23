@@ -6,8 +6,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "build:prod": "ng build --configuration production && cp src/assets/env.js dist/fashion-virtual-try-on/assets/",
+    "generate-env": "node ./scripts/generate-env.js",
+    "build": "npm run generate-env && ng build",
+    "build:prod": "npm run generate-env && ng build --configuration production && cp src/assets/env.js dist/fashion-virtual-try-on/assets/",
     "watch": "ng build --watch --configuration development"
   },
   "dependencies": {
