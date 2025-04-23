@@ -1,3 +1,3 @@
 window._env_ = {
-  API_KEY: 'YOUR_API_KEY_HERE'
+  NEXT_PUBLIC_API_KEY: 'YOUR_API_KEY_HERE'
 }; 

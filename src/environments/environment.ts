@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiKey: 'development-key'
+  apiKey: process.env['NEXT_PUBLIC_API_KEY']
 }; 
