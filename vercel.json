@@ -24,7 +24,6 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_API_URL": "@api_url",
     "NEXT_PUBLIC_API_KEY": "@api_key"
   }
 } 
