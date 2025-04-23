@@ -66,12 +66,15 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "fashion-virtual-try-on:build"
+          },
           "configurations": {
             "production": {
-              "browserTarget": "fashion-virtual-try-on:build:production"
+              "buildTarget": "fashion-virtual-try-on:build:production"
             },
             "development": {
-              "browserTarget": "fashion-virtual-try-on:build:development"
+              "buildTarget": "fashion-virtual-try-on:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "fashion-virtual-try-on:build"
+            "buildTarget": "fashion-virtual-try-on:build"
           }
         },
         "test": {
