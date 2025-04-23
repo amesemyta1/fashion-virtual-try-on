@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: npm run build:prod
       env:
-        API_KEY: ${{ secrets.FASHION_AI_API_KEY }} 
+        NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }} 

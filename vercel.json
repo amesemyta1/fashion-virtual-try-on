@@ -5,19 +5,12 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "ng build --configuration production",
-        "outputDirectory": "dist/fashion-virtual-try-on"
+        "buildCommand": "npm run build:prod",
+        "outputDirectory": "dist"
       }
     }
   ],
   "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
     {
       "src": "/(.*)",
       "dest": "/index.html"

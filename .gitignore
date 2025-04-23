@@ -44,15 +44,5 @@ testem.log
 Thumbs.db
 
 # Environment files
-/src/environments/*
-!/src/environments/environment.template.ts
-!/src/environments/environment.ts
-!/src/environments/environment.prod.ts
-
-# Environment variables
-/src/assets/env.js
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*

@@ -6,5 +6,5 @@ declare global {
 
 export const environment = {
   production: true,
-  apiKey: process.env['NEXT_PUBLIC_API_KEY']
+  apiKey: typeof window !== 'undefined' ? window.NEXT_PUBLIC_API_KEY : undefined
 }; 
