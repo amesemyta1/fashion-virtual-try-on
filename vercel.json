@@ -22,8 +22,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "NEXT_PUBLIC_API_KEY": "@api_key"
-  }
+  ]
 } 
