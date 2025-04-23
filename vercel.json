@@ -6,11 +6,18 @@
       "use": "@vercel/static-build",
       "config": {
         "buildCommand": "npm run build:prod",
-        "outputDirectory": "dist"
+        "outputDirectory": "dist/fashion-virtual-try-on"
       }
     }
   ],
   "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"
